@@ -1,0 +1,37 @@
+{% load static %}
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Logout</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body, html {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .center-container {
+        text-align: center;
+      }
+
+      .center-image {
+        width: 600px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    {% include "componets/navbar.html" %}
+
+    <div class="center-container">
+      <img src="{% static "image/logout_img.png" %}" class="center-image">
+    </div>
+
+    {% include "componets/footer.html" %}
+
+  </body>
+</html>
