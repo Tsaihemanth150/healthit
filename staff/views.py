@@ -7,9 +7,9 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from .models import generate_staff_id, Staff
 from staff.forms import SignupForm
-
-
+from django.urls import reverse_lazy
 # Create your views here.
+
 
 def register_staff_view(request):
     if request.method == 'POST':
@@ -37,8 +37,10 @@ def register_staff_view(request):
                 # Log the user in
                 login(request, user)
 
-                messages.success(request, 'Account created successfully. Send deatils of the staff.')
-                return HttpResponseRedirect(reverse('admindashbord'))
+                messages.success(request, 'Account created successfully. Send details of the staff.')
+
+                return HttpResponseRedirect(reverse_lazy('admindashbord'))
+
             except ValidationError as e:
                 # Print any validation error that may occur during save
                 print(f"Validation Error: {e}")
@@ -53,6 +55,7 @@ def register_staff_view(request):
 
     mydict = {'signupForm': signupForm}
     return render(request, 'admin/register_staff.html', context=mydict)
+
 
 
 def custom_login(request, *args, **kwargs):
@@ -72,3 +75,4 @@ def staff_profile_view(request):
         return render(request, 'staff/staff_profile.html', context)
     else:
         return redirect('home')
+

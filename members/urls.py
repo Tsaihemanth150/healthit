@@ -35,10 +35,24 @@ urlpatterns = [
 
     #questions
     path('admin-question',views.admin_question_view,name='admin-question'),
-    path('update-question/<int:pk>', views.update_question_view,name='update-question'),
+    path('update-question/<int:pk>', views.update_admin_comment_view,name='update-question'),
 
+    #Department
+    path('department',views.department_view,name='department'),
+    path('view-department',views.view_all_department_view,name='view-department'),
+    path('add-department',views.add_department_view,name='add-department'),
+    path('assign-department/<str:custom_id>/', views.assign_department_view, name='assign-department'),
+    path('view-staff-with-department',views.view_staff_with_department,name='view-staff-with-department'),
+
+    ## staff
+    path('view-staff', views.admin_view_staff, name='view-staff'),
+    #palns
+    path('manage-plans',views.mange_plans_viwes,name='manage-plans'),
+    path('view-plans',views.view_plans_view,name='view-plans'),
+    path('add-plans',views.add_plans_view,name='add-plans'),
 
 ## Member Account or Profile Routes sections
     path('askquestion',views.ask_question_view,name='askquestion'),
     path('questionhistory',views.question_history_view,name='questionhistory'),
+    path('plans',views.View_Plans_View,name='plans'),
 ]

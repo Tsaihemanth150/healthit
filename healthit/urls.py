@@ -26,6 +26,7 @@ urlpatterns = [
     ##### webiste basic urls ###
     path('', views.index, name="home"),
     path('contactus', views.contactus, name="contcatus"),
+    path('copy-rights',views.copyrights_views,name="copy-rights"),
     path('aboutus', views.aboutus, name="aboutus"),
     path('options',views.options,name="options"),
 ]

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
+from members import models as MMODEL
 class Staff(models.Model):
     email = models.EmailField()
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -11,6 +11,7 @@ class Staff(models.Model):
     mobile = models.CharField(max_length=20, null=False)
     nationality = models.CharField(max_length=40, null=True)
     custom_id = models.CharField(max_length=8, unique=True, default='', editable=False)  # Set a default value
+    department = models.ForeignKey(MMODEL.Department, on_delete=models.SET_NULL, null=True, related_name='staff')
 
     @property
     def get_name(self):
@@ -34,3 +35,4 @@ def generate_staff_id(sender, instance, **kwargs):
         else:
             last_id_number = 1
         instance.custom_id = f'HLTSTF{str(last_id_number).zfill(4)}'
+

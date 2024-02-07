@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'members',
     'staff',
-    'labratory',
-    'pharamacy',
     'widget_tweaks',
 
 ]

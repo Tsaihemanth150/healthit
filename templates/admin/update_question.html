@@ -54,14 +54,11 @@
 <h3 style="text-align:center;">Update Question</h3>
 <div>
   <form method="post" autocomplete="off" enctype="multipart/form-data" style="margin-left:200px;margin-right:200px;">
-      {% csrf_token %}
-        <label for="course_name">Question</label>
-      {% render_field questionForm.Description class="form-control"%}
+    {% csrf_token %}
 
-        <label for="course_name">Your Comment</label>
-      <input type="text" name="admin_comment" id="admin_comment" class="form-control">
-
-
+    <!-- Render the admin comment field -->
+    <label for="admin_comment">Your Comment</label>
+    <input type="text" name="admin_comment" id="admin_comment" class="form-control" value="{{ questionForm.admin_comment.value }}">
 
     <input type="submit" value="Update">
   </form>

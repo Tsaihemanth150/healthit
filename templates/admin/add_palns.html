@@ -1,0 +1,135 @@
+{% extends 'admin/adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+      a:link {
+        text-decoration: none;
+      }
+
+      .order-card {
+        color: rgb(255, 255, 255);
+      }
+
+      .bg-c-blue {
+        background: #04868f;
+      }
+
+      .bg-c-green {
+        background:#4C51BF;
+      }
+
+      .bg-c-yellow {
+        background: #F56565;
+      }
+
+      .bg-c-pink {
+        background: #663a30;
+      }
+
+
+      .card {
+
+        -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+        box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+        border: 1px solid black;
+        margin-bottom: 30px;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .card .card-block {
+        padding: 25px;
+      }
+
+      .order-card i {
+        font-size: 26px;
+      }
+
+      .f-left {
+        float: left;
+      }
+
+      .f-right {
+        float: right;
+      }
+      header {
+      left: 0px;
+      right: 0px;
+    }
+
+
+    </style>
+  </head>
+
+<br><br><br>
+  <h3 style="text-align: center;color: red;">Add Plans</h3>
+  <form method="POST" autocomplete="off" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Name</label>
+        {% render_field plans_form.name|attr:'required:true' class="form-control" placeholder="name " %}
+      </div>
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">price</label>
+        {% render_field plans_form.price|attr:'required:true' class="form-control" placeholder="price " %}
+      </div>
+
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Plan Type</label>
+        {% render_field plans_form.plan_type|attr:'required:true' class="form-control" placeholder="plan_type " %}
+      </div>
+
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Validity</label>
+        {% render_field plans_form.validity|attr:'required:true' class="form-control" placeholder="Validity " %}
+      </div>
+
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Care Staff Available</label>
+        {% render_field plans_form.care_staff_available class="form-control" placeholder="Validity " %}
+      </div>
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Dedicated Services</label>
+        {% render_field plans_form.dedicated_services class="form-control" placeholder="Validity " %}
+      </div>
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Alerts</label>
+        {% render_field plans_form.alerts class="form-control" placeholder="Validity " %}
+      </div>
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Free Pharmacy</label>
+        {% render_field plans_form.free_pharmacy class="form-control" placeholder="Validity " %}
+      </div>
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Free Laboratory</label>
+        {% render_field plans_form.free_laboratory class="form-control" placeholder="Validity " %}
+      </div>
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Video Consultation</label>
+        {% render_field plans_form.video_consultation class="form-control" placeholder="Validity " %}
+      </div>
+
+<div class="content-left mx-3 ">
+    <button type="submit" class="btn  btn-primary">Add Plans</button>
+</div>
+    </div>
+  </form>
+
+
+
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+
+{% endblock content %}

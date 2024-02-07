@@ -7,14 +7,14 @@ from django.contrib.auth.views import LogoutView, LoginView
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import SignupForm
+from .forms import SignupForm,DepartmentForm,PlansForm
 from . import models as CMODEL
 from . import forms as CFORM
 from staff import models as SMODEL
-from .models import Member, generate_member_id
+from .models import Member, generate_member_id,Department
 from django.core.exceptions import ObjectDoesNotExist
-
-
+from staff import  models as STMODEL
+from .forms import AssignDepartmentForm
 
 ## Authentication ##################################################################
 def signup_view(request):
@@ -64,6 +64,8 @@ def signup_view(request):
 def is_admin(user):  ### Check user is staff or not
     return user.is_staff
 
+def is_admin_login(user):
+    return user.is_authenticated and user.is_staff
 
 def is_staff(user):
     try:
@@ -85,7 +87,7 @@ def afterlogin_view(request):
     if request.user.is_authenticated:
         if is_admin(request.user):
             messages.success(request, 'Hello, welcome to ADMIN')
-            return redirect('admindashboard')
+            return redirect('admindashbord')
         elif is_staff(request.user):
             return redirect('staff-profile')
         else:
@@ -104,7 +106,7 @@ def member_profile_view(request):
         member_instance = Member.objects.get(user=request.user)
 
         context = {'member_instance': member_instance}
-        return render(request, 'member/staff_profile.html', context)
+        return render(request, 'member/myprofile.html', context)
     else:
         return redirect('home')
 
@@ -116,58 +118,72 @@ def admin_dashboard_view(request):
 
 
 @login_required(login_url='login')
+@user_passes_test(is_admin)
 def manage_members_view(request):
     dict = {
         'total_user': CMODEL.Member.objects.all().count(),
     }
     return render(request, 'admin/manage_members.html', context=dict)
 
-
+###### admin_staff #######################################
 @login_required(login_url='login')
+@user_passes_test(is_admin)
 def manage_staff_view(request):
     dict = {
-        'total_user': SMODEL.Staff.objects.all().count(),
+        'total_user': STMODEL.Staff.objects.all().count(),
     }
     return render(request, 'admin/manage_staff.html', context=dict)
 
+def admin_view_staff(request):
+    staff = STMODEL.Staff.objects.all()
+    return render(request, 'admin/view_staff.html', {'staff': staff})
+
+
 
 @login_required(login_url='login')
+@user_passes_test(is_admin)
 def admin_question_view(request):
     questions = CMODEL.Question.objects.all()
     return render(request, 'admin/admin_question.html', {'questions': questions})
 
 
 @login_required(login_url='login')
-def update_question_view(request, pk):
+@user_passes_test(is_admin)
+def update_admin_comment_view(request, pk):
     question = CMODEL.Question.objects.get(id=pk)
-    questionForm = CFORM.QuestionForm(instance=question)
 
     if request.method == 'POST':
-        questionForm = CFORM.QuestionForm(request.POST, instance=question)
+        # Retrieve the admin_comment value from the POST data
+        admin_comment = request.POST.get('admin_comment')
 
-        if questionForm.is_valid():
-            admin_comment = request.POST.get('admin_comment')
+        # Update the admin_comment field of the question object
+        question.admin_comment = admin_comment
 
-            question = questionForm.save(commit=False)
-            question.admin_comment = admin_comment
-            question.save()
+        # Save the updated question
+        question.save()
 
-            return redirect('admin-question')
-    return render(request, 'admin/update_question.html', {'questionForm': questionForm})
+        return redirect('admin-question')  # Redirect to the appropriate URL after updating
+
+    # Render the form initially populated with existing admin comment
+    return render(request, 'admin/update_question.html', {'questionForm': CFORM.QuestionForm(instance=question)})
 
 
 #### Member Profile Scetions. #####################################################################################################
 def ask_question_view(request):
-    member = CMODEL.Member.objects.get(user_id=request.user.id)
-    questionForm = CFORM.QuestionForm()
+    member = Member.objects.get(user_id=request.user.id)
 
     if request.method == 'POST':
         questionForm = CFORM.QuestionForm(request.POST)
+
         if questionForm.is_valid():
             question = questionForm.save(commit=False)
-            question.member = member  # Use the member instance, not the class
+            question.member = member
             question.save()
             return redirect('questionhistory')
+        else:
+            print(questionForm.errors)  # Print form errors for debugging
+    else:
+        questionForm =CFORM.QuestionForm()
 
     return render(request, 'member/ask_question.html', {'questionForm': questionForm, 'member': member})
 
@@ -176,3 +192,116 @@ def question_history_view(request):
     member = CMODEL.Member.objects.get(user_id=request.user.id)
     questions = CMODEL.Question.objects.all().filter(member=member)
     return render(request, 'member/question_history.html', {'questions': questions, 'member': member})
+
+
+### DEPARTMENT
+@user_passes_test(is_admin)
+def add_department_view(request):
+    if request.method == 'POST':
+        department_form = DepartmentForm(request.POST)
+
+        if department_form.is_valid():
+            try:
+                department = department_form.save(commit=False)
+                department.save()
+                messages.success(request, 'Department added successfully.')
+                return HttpResponseRedirect(reverse('admindashbord'))
+            except Exception as e:
+                print(f"Error adding department: {e}")
+                messages.error(request, 'Error adding department. Please try again.')
+        else:
+            print(department_form.errors)
+            messages.error(request, 'Invalid form submission. Please correct the errors.')
+    else:
+        department_form = DepartmentForm()
+
+    context = {'department_form': department_form}
+    return render(request, 'admin/add_department.html', context)
+
+
+### deapertment
+@login_required(login_url='login')
+@user_passes_test(is_admin)
+def department_view(request):
+    dict = {
+        'total_member': CMODEL.Department.objects.all().count(),
+    }
+    return render(request, 'admin/department.html', context=dict)
+@login_required(login_url='login')
+@user_passes_test(is_admin)
+def view_all_department_view(request):
+    department = CMODEL.Department.objects.all()
+    return render(request, 'admin/view_departments.html', {'department': department})
+
+
+## asign the departemnt
+@user_passes_test(is_admin)
+def assign_department_view(request, custom_id):
+    try:
+        staff_member = STMODEL.Staff.objects.get(custom_id=custom_id)
+    except STMODEL.Staff.DoesNotExist:
+        # Handle the case where staff member with the given custom ID does not exist
+        return render(request, 'staff_member_not_found.html')
+
+    if request.method == 'POST':
+        form = AssignDepartmentForm(request.POST)
+        if form.is_valid():
+            department_id = form.cleaned_data['department']  # Get department ID from the form
+            staff_member.department_id = department_id  # Assign department ID to staff member
+            staff_member.save()
+            return redirect('view-staff-with-department')  # Redirect to staff detail page
+    else:
+        form = AssignDepartmentForm()
+
+    return render(request, 'admin/assign_department.html', {'form': form, 'staff_member': staff_member})
+@user_passes_test(is_admin)
+def view_staff_with_department(request):
+
+    stf=STMODEL.Staff.objects.all()
+    return render(request, 'admin/view_staff_with_department.html', {'stf':stf})
+
+
+
+### plans
+@user_passes_test(is_admin)
+@login_required(login_url='login')
+def mange_plans_viwes(request):
+    dict = {
+        'ALl_Plans': CMODEL.Plan.objects.all().count(),
+    }
+    return render(request, 'admin/manage_plans.html', context=dict)
+
+def view_plans_view(request):
+    plans=CMODEL.Plan.objects.all()
+    context = {'plans': plans}
+    return render(request,'admin/view_plans.html',context)
+@user_passes_test(is_admin)
+def add_plans_view(request):
+    if request.method == 'POST':
+        plans_form = PlansForm(request.POST)
+
+        if plans_form.is_valid():
+            try:
+                department = plans_form.save(commit=False)
+                department.save()
+                messages.success(request, 'Plan added successfully.')
+                return HttpResponseRedirect(reverse('admindashbord'))
+            except Exception as e:
+                print(f"Error adding department: {e}")
+                messages.error(request, 'Error adding department. Please try again.')
+        else:
+            print(plans_form.errors)
+            messages.error(request, 'Invalid form submission. Please correct the errors.')
+    else:
+        plans_form = PlansForm()
+
+    context = {'plans_form': plans_form}
+    return render(request, 'admin/add_palns.html', context)
+
+
+############## PLANS ##############
+
+def View_Plans_View(request):
+    plan=CMODEL.Plan.objects.all()
+    context = {'plan': plan}
+    return render(request,'member/plans.html',context)

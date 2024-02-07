@@ -12,3 +12,6 @@ def contactus(request):
     return render(request,'healthit/contactus.html')
 def options(request):
     return render(request,'healthit/options.html')
+
+def copyrights_views(request):
+    return render(request,'healthit/Copy_Rights.html')

@@ -25,6 +25,7 @@ urlpatterns = [
     path('regiter-staff', views.register_staff_view, name='regiter-staff'),
     path('login/staff', views.custom_login, name='stafflogin'),
 
+
 ## Profile
     path('staff-profile',views.staff_profile_view,name='staff-profile'),
 ]

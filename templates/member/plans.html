@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans Display</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 250px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h2 {
+            color: #007bff; /* Blue heading color */
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .feature i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        .feature .highlight {
+            color: #ffd700; /* Yellow highlight */
+        }
+        .highlight {
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+{% include "componets/navbar.html" %}
+<br><br>
+    <div class="container">
+        {% for plan in plan %}
+        <div class="card">
+            <h2>{{ plan.name }}</h2>
+            <div class="feature"><i class="fas fa-dollar-sign"></i><span class="highlight">${{ plan.price }}</span></div>
+            <div class="feature"><i class="fas fa-tag"></i><span>{{ plan.plan_type }}</span></div>
+            <div class="feature"><i class="far fa-calendar-alt"></i><span>{{ plan.validity }}</span></div>
+            <div class="feature"><i class="fas fa-user-nurse"></i><span class="{% if plan.care_staff_available %}highlight{% endif %}">{% if plan.care_staff_available %}Available{% else %}Not Available{% endif %}</span></div>
+            <div class="feature"><i class="fas fa-user-md"></i><span class="{% if plan.dedicated_services %}highlight{% endif %}">{% if plan.dedicated_services %}Available{% else %}Not Available{% endif %}</span></div>
+            <div class="feature"><i class="fas fa-bell"></i><span class="{% if plan.alerts %}highlight{% endif %}">{% if plan.alerts %}Enabled{% else %}Disabled{% endif %}</span></div>
+            <div class="feature"><i class="fas fa-pills"></i><span class="{% if plan.free_pharmacy %}highlight{% endif %}">{% if plan.free_pharmacy %}Free{% else %}Paid{% endif %}</span></div>
+            <div class="feature"><i class="fas fa-vial"></i><span class="{% if plan.free_laboratory %}highlight{% endif %}">{% if plan.free_laboratory %}Free{% else %}Paid{% endif %}</span></div>
+            <div class="feature"><i class="fas fa-video"></i><span class="{% if plan.video_consultation %}highlight{% endif %}">{% if plan.video_consultation %}Available{% else %}Not Available{% endif %}</span></div>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

@@ -72,54 +72,21 @@
     </style>
   </head>
 
-{% if messages %}
-    <ul class="messages alert alert-info" role="alert">
-    {% for message in messages %}
-    <li {% if message.tags  %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+<br><br><br>
+  <h3 style="text-align: center;color: red;">Add Department</h3>
+  <form method="POST" autocomplete="off" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
 
-
-<br>
-
-
-
-
-    <div class="row mx-2">
-      <div class="col-md-4 col-xl-3">
-        <div class="card bg-c-blue   order-card">
-          <div class="card-block">
-            <h6 class="m-b-20"> <a href="view-staff" style="text-decoration: none;color:white;">Total Registered Staff</a> </h6>
-            <h2 class="text-right"><i  class="fas fa-users f-left"></i><span>{{total_user}}</span></h2>
-
-          </div>
-        </div>
-      </div>
-     <div class="col-md-4 col-xl-3">
-        <div class="card bg-c-blue  order-card">
-          <div class="card-block">
-            <h6 class="m-b-20"><a href="view-staff-with-department" style="text-decoration: none;color:white;">Assign Department</a> </h6>
-            <h2 class="text-right"><i class="fas fa-plus f-left"></i></h2>
-          </div>
-        </div>
-       </div>
-
-      <div class="col-md-4 col-xl-3">
-        <div class="card bg-c-blue  order-card">
-          <div class="card-block">
-            <h6 class="m-b-20"> <a href="regiter-staff" style="text-decoration: none;color:white;">Register A Satff</a> </h6>
-            <h2 class="text-right"><i class="fas fa-plus"></i></i></h2>
-
-          </div>
-
-
-        </div>
-
-
-
+      <div class="form-group mx-3 col-md-5">
+        <label for="validationCustom01">Username</label>
+        {% render_field department_form.name|attr:'required:true' class="form-control" placeholder="Username" %}
       </div>
 
+<div class="content-left mx-3 ">
+    <button type="submit" class="btn  btn-primary">Add Department</button>
+</div>
+    </div>
+  </form>
 
 
 
