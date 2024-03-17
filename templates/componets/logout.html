@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .logout-message {
+      text-align: center;
+    }
+
+    .redirect-message {
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    .btn {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  {% include "componets/navbar.html" %}
+  <div class="logout-message">
+    <h1>Logout Successful</h1>
+    <p>You have been successfully logged out.</p>
+    <p class="redirect-message">You will be redirected to the homepage in <span id="countdown">5</span> seconds.</p>
+    <a href="/" class="btn btn-primary">Return to Homepage Now</a>
+  </div>
+
+  <script>
+    // Redirect to homepage after 5 seconds
+    setTimeout(function() {
+      window.location.href = "/";
+    }, 5000);
+
+    // Update countdown timer every second
+    var countdown = 5;
+    setInterval(function() {
+      countdown--;
+      document.getElementById("countdown").textContent = countdown;
+    }, 1000);
+  </script>
+</body>
+</html>

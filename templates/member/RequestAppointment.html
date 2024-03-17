@@ -1,0 +1,129 @@
+{% load widget_tweaks %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Schedule</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style type="text/css">
+        /* Your CSS styles here */
+        .container {
+            margin-top: 50px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 20px;
+        }
+
+        .btn-primary {
+            border-radius: 20px;
+        }
+
+        .card {
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+{% include "componets/navbar.html" %}
+
+{% block content %}
+
+<br><br>
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-dark">
+            <h3 class="card-title mb-0">Add Schedule</h3>
+        </div>
+        <div class="card-body">
+            <form method="post" onsubmit="return validateDateTime()">
+                {% csrf_token %}
+                <!-- Hidden input field for member_id -->
+                <input type="hidden" name="member_id" value="{{ member_id }}">
+
+                <div class="form-group">
+                    <label for="desc">Appointment Details</label>
+                    <textarea class="form-control" id="Desc" name="Desc" rows="3" placeholder="Please write about your problem"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="date">Date (YYYY-MM-DD)</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="time">Time (HH:MM)</label>
+                        <input type="time" class="form-control" id="Time" name="Time">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
+            <button class="btn btn-dark" id="bookAppointmentBtn">Back</button>
+        </div>
+
+    </div>
+
+</div>
+{% include "componets/footer.html" %}
+
+<script>
+    function validateDateTime() {
+        var selectedDate = new Date(document.getElementById('date').value + 'T' + document.getElementById('Time').value);
+        var currentDate = new Date();
+        if (selectedDate < currentDate) {
+            alert("Please select a future date and time.");
+            return false;
+        }
+        return true;
+    }
+    document.getElementById("bookAppointmentBtn").addEventListener("click", function() {
+        window.location.href = "/member-dashboard"; // Replace "/" with the URL of your homepage
+    });
+</script>
+
+{% endblock content %}

@@ -1,62 +1,26 @@
 from django.contrib.auth import login
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
-from django.core.exceptions import ValidationError
+
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .models import generate_staff_id, Staff
-from staff.forms import SignupForm
+from staff.forms import SignupForm, ScheduleBlockForm
 from django.urls import reverse_lazy
 # Create your views here.
 
 
-def register_staff_view(request):
-    if request.method == 'POST':
-        signupForm = SignupForm(request.POST)
-
-        if signupForm.is_valid():
-            try:
-                # Save the User instance
-                user = signupForm.save(commit=False)
-                user.set_password(signupForm.cleaned_data['password1'])
-                user.save()
-
-                # Create a Member instance and link it to the User
-                member = Staff.objects.create(
-                    user=user,
-                    email=signupForm.cleaned_data['email'],
-                    address='',  # Add address, mobile, nationality as needed
-                    mobile='',
-                    nationality=''
-                )
-
-                # Generate custom_id for the Member instance
-                generate_staff_id(sender=Staff, instance=member)
-
-                # Log the user in
-                login(request, user)
-
-                messages.success(request, 'Account created successfully. Send details of the staff.')
-
-                return HttpResponseRedirect(reverse_lazy('admindashbord'))
-
-            except ValidationError as e:
-                # Print any validation error that may occur during save
-                print(f"Validation Error: {e}")
-                messages.error(request, 'Error creating account. Please try again.')
-        else:
-            # Print form errors for debugging
-            print(signupForm.errors)
-            messages.error(request, 'Invalid form submission. Please correct the errors.')
-
-    else:
-        signupForm = SignupForm()
-
-    mydict = {'signupForm': signupForm}
-    return render(request, 'admin/register_staff.html', context=mydict)
 
 
+def is_staff(user):
+    try:
+        staff = Staff.objects.get(user=user)
+        return staff.healthit_staff
+    except ObjectDoesNotExist:
+        return False
 
 def custom_login(request, *args, **kwargs):
     if request.user.is_authenticated:
@@ -76,3 +40,25 @@ def staff_profile_view(request):
     else:
         return redirect('home')
 
+
+@user_passes_test(is_staff, login_url='/')
+def view_my_members(request):
+    staff_members = Staff.objects.all()
+    members = []
+    for staff_member in staff_members:
+        members.extend(staff_member.members.all())
+    return render(request, 'staff/mymembers.html', {'members': members})
+
+
+@user_passes_test(is_staff, login_url='/')
+def add_schedule(request):
+    if request.method == 'POST':
+        form = ScheduleBlockForm(request.POST)
+        if form.is_valid():
+            schedule_block = form.save(commit=False)
+            schedule_block.staff = request.user.staff  # Assuming user's staff instance is linked
+            schedule_block.save()
+            return redirect('view_schedule')  # Redirect to a view to display all schedules
+    else:
+        form = ScheduleBlockForm()
+    return render(request, 'staff/add_appointmnet.html', {'form': form})

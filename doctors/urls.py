@@ -21,12 +21,5 @@ from . import views
 
 urlpatterns = [
 
-#auth routes
-    path('login/staff', views.custom_login, name='stafflogin'),
 
-
-## Profile
-    path('staff-profile',views.staff_profile_view,name='staff-profile'),
-    path('view-my-members', views.view_my_members, name='view-my-members'),
-    path('add-appointment', views.add_schedule, name='add-appointment'),
 ]

@@ -1,0 +1,89 @@
+{% extends 'member/customerbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: 600;
+        }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        input[type="email"][readonly] {
+            background-color: #f8f9fa; /* Add a background color for readonly fields */
+            cursor: not-allowed; /* Change cursor for readonly fields */
+        }
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Edit Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+          <div class="form-group">
+            <label for="id_email">Email</label>
+            <input type="email" id="id_email" name="email" value="{{ form.email.value }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="id_address">Address</label>
+            {{ form.address }}
+        </div>
+        <div class="form-group">
+            <label for="id_gender">Gender</label>
+            {{ form.gender }}
+        </div>
+        <div class="form-group">
+            <label for="id_mobile">Mobile</label>
+            {{ form.mobile }}
+        </div>
+        <div class="form-group">
+            <label for="id_nationality">Nationality</label>
+            {{ form.nationality }}
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+</body>
+</html>
+
+{% endblock content %}

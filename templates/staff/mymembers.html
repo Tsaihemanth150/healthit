@@ -1,0 +1,94 @@
+{% extends 'staff/staffbase.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    #search {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    table th {
+      background-color: #f2f2f2;
+    }
+
+  </style>
+
+  <script>
+    $(document).ready(function(){
+      $("#search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#memberTable tbody tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+</head>
+
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h6 class="panel-title">Member Details</h6>
+    </div>
+
+    <input type="text" id="search" placeholder="Search for members...">
+
+    <table id="memberTable">
+      <thead>
+        <tr>
+          <th>Serial No.</th>
+          <th>Custom ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Plan</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for members in members %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ members.custom_id }}</td>
+            <td>{{ members.get_name }}</td>
+            <td>{{ members.email }}</td>
+            <td>{{ members.plan }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}

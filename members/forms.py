@@ -8,9 +8,10 @@ from members import models
 class SignupForm(UserCreationForm):
     email = forms.EmailField()
 
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2',]
 
 
 class QuestionForm(forms.ModelForm):
@@ -36,6 +37,11 @@ class AssignDepartmentForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+class AssignMembersForm(forms.Form):
+    Member = forms.ModelChoiceField(queryset=models.Member.objects.all(), empty_label="Select Member")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class PlansForm(forms.ModelForm):
@@ -49,3 +55,13 @@ class AssignPlansForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.Member
+        fields = ['email', 'address', 'gender', 'mobile', 'nationality']
+
+class RequestAppointmentForm(forms.ModelForm):
+    class Meta:
+        model = models.AppointmentRequset
+        fields = ['Desc', 'date', 'Time']

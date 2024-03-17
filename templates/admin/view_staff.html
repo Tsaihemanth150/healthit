@@ -1,6 +1,6 @@
 {% extends 'admin/adminbase.html' %}
 {% block content %}
-{%load static%}
+{% load static %}
 
 <head>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -20,7 +20,7 @@
       margin: 100px;
     }
 
-       label #sidebar_btn {
+    label #sidebar_btn {
       z-index: 1;
       color: #fff;
       position: fixed;
@@ -33,10 +33,24 @@
       transition: 0.5s;
       transition-property: color;
     }
+
+    /* Style for filter input */
+    .filter-input {
+      width: 100%;
+      padding: 6px 12px;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
   </style>
 </head>
 <br><br>
 <div class="container">
+  <!-- Filter Field for Staff ID -->
+  <div class="form-group">
+    <label for="filterStaffId">Filter by Staff ID:</label>
+    <input type="text" class="form-control filter-input" id="filterStaffId">
+  </div>
+
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h6 class="panel-title">Questions</h6>
@@ -44,23 +58,22 @@
     <table class="table table-hover" id="dev-table">
       <thead>
         <tr>
-            <th>Serial No.</th>
+          <th>Serial No.</th>
           <th>Staff Id</th>
           <th>Email</th>
           <th>Name</th>
           <th>Department</th>
-             <th>Update</th>
+          <th>Action</th>
         </tr>
       </thead>
       {% for t in staff %}
       <tr>
-        <td> {{ forloop.counter }}</td>
-        <td> {{t.custom_id}}</td>
-        <td> {{t.email}}</td>
-        <td> {{t.user.first_name}}</td>
-        <td> {{t.department.name}}</td>
-
-
+        <td>{{ forloop.counter }}</td>
+        <td>{{ t.custom_id }}</td>
+        <td>{{ t.email }}</td>
+        <td>{{ t.user.first_name }}</td>
+        <td>{{ t.department.name }}</td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-staff' t.custom_id %}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>
       {% endfor %}
     </table>
@@ -68,4 +81,22 @@
 </div>
 
 <br><br><br><br><br><br>
+
+<script>
+  // JavaScript for filtering table rows based on staff ID
+  $(document).ready(function(){
+    $('#filterStaffId').keyup(function(){
+      var searchText = $(this).val().toLowerCase();
+      $('#dev-table tbody tr').each(function(){
+        var currentRowText = $(this).find('td:nth-child(2)').text().toLowerCase();
+        if(currentRowText.indexOf(searchText) === -1){
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock content %}

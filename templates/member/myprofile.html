@@ -143,9 +143,9 @@
 
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
-                    </div>
+                   <div class="col-md-2">
+    <input type="button" class="profile-edit-btn" onclick="redirectToEditProfile()" name="btnAddMore" value="Edit Profile"/>
+</div>
                 </div>
 
 
@@ -153,7 +153,7 @@
                 <div class="row">
 
                     <div class="col-md-4">
-                         <button type="button" class="btn btn-info" > <a href="/plans" class="text-warning">Views Plans</a>  </button>
+
                         <div class="profile-work">
                             <p>WORK LINK</p>
                             <a href="">Website Link</a><br/>
@@ -202,6 +202,14 @@
                                                 <p>{{member_instance.mobile}}</p>
                                             </div>
                                         </div>
+                                <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Gender</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>{{member_instance.gender}}</p>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Address</label>
@@ -219,6 +227,10 @@
         </div>
 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-
+<script>
+function redirectToEditProfile() {
+    window.location.href = "{% url 'edit-profile' %}";
+}
+</script>
 
 {% endblock content %}

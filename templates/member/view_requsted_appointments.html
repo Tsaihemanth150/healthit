@@ -1,0 +1,112 @@
+{% extends 'member/customerbase.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+
+    label #sidebar_btn {
+      z-index: 1;
+      color: #fff;
+      position: fixed;
+      cursor: pointer;
+      left: 300px;
+      padding-left: 60px;
+      margin-top: 15px;
+      font-size: 20px;
+      transition: 0.5s;
+      transition-property: color;
+    }
+  </style>
+</head>
+<!-- Filter buttons -->
+<div class="container">
+  <button onclick="filterAppointments('all')" class="btn btn-primary">All Appointments</button>
+  <button onclick="filterAppointments('today')" class="btn btn-primary">Today's Appointments</button>
+  <button onclick="filterAppointments('upcoming')" class="btn btn-primary">Upcoming Appointments</button>
+  <button class="btn btn-success" id="bookAppointmentBtn">Book Appointment</button>
+</div>
+<br><br>
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h6 class="panel-title">View My Appointmnets</h6>
+    </div>
+    <table class="table table-hover" id="dev-table">
+      <thead>
+        <tr>
+          <th>Serial No.</th>
+          <th>Appointment ID</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      {% for t in appointments %}
+      <tr>
+        <td> {{ forloop.counter }}</td>
+        <td> {{t.Request_id}}</td>
+        <td>{{t.date}}</td>
+        <td>{{t.Time}}</td>
+         <td>{{t.Desc}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+<br><br><br><br><br><br>
+
+
+
+<script>
+  // Function to filter appointments
+  function filterAppointments(filterType) {
+    // Get all rows of the table
+    var rows = document.querySelectorAll("#dev-table tbody tr");
+
+    // Loop through each row
+    rows.forEach(function(row) {
+      // Show all rows by default
+      row.style.display = "";
+
+      // Get the date column value for each row
+      var date = row.cells[2].textContent; // Assuming date is in the third column
+
+      // Check the filter type and hide rows accordingly
+      if (filterType === 'today') {
+        var today = new Date();
+        var rowDate = new Date(date);
+        if (rowDate.toDateString() !== today.toDateString()) {
+          row.style.display = "none";
+        }
+      } else if (filterType === 'upcoming') {
+        var today = new Date();
+        var rowDate = new Date(date);
+        if (rowDate < today) {
+          row.style.display = "none";
+        }
+      }
+    });
+  }
+  document.getElementById("bookAppointmentBtn").addEventListener("click", function() {
+        window.location.href = "/add-appointment-request"; // Replace "/" with the URL of your homepage
+    });
+</script>
+
+{% endblock content %}

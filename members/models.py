@@ -38,6 +38,8 @@ def generate_plan_id(sender, instance, **kwargs):
         instance.plan_id = f'HLTPLN{str(last_id_number).zfill(4)}'
 
 
+
+
 class Member(models.Model):
     email = models.EmailField()
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -45,8 +47,9 @@ class Member(models.Model):
     gender = models.CharField(max_length=10, null=True)
     mobile = models.CharField(max_length=20, null=False)
     nationality = models.CharField(max_length=40, null=True)
-    custom_id = models.CharField(max_length=8, unique=True, default='', editable=False)  # Set a default value
-    plan = models.ForeignKey(Plan, on_delete=models.SET_NULL,null=True, related_name='member')
+    custom_id = models.CharField(max_length=8, unique=True, default='', editable=False)
+    plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True, related_name='member')
+
 
 
     @property
@@ -103,3 +106,27 @@ def generate_dept_id(sender, instance, **kwargs):
         else:
             last_id_number = 1
         instance.Dept_id = f'HLTDPT{str(last_id_number).zfill(4)}'
+
+
+class AppointmentRequset(models.Model):
+    Request_id = models.CharField(max_length=20, unique=True, default='', editable=False)
+    Desc = models.CharField(max_length=50)
+    date = models.DateField()
+    Time = models.TimeField()
+    member = models.ForeignKey(Member, on_delete=models.SET_NULL, null=True, related_name='appointment_requests')
+
+
+    def __str__(self):
+        return self.Request_id
+
+@receiver(pre_save, sender=AppointmentRequset)
+def generate_Appointment_id(sender, instance, **kwargs):
+    # Check if the instance is being created for the first time
+    if not instance.Request_id:
+        # Generate a unique ID in the format HLTAPRXXXX
+        last_id = AppointmentRequset.objects.order_by('-Request_id').first()
+        if last_id and last_id.Request_id:  # Check if last_id.Request_id is not empty
+            last_id_number = int(last_id.Request_id[6:]) + 1
+        else:
+            last_id_number = 1
+        instance.Request_id = f'HLTAPR{str(last_id_number).zfill(4)}'

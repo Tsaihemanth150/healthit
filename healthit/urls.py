@@ -21,7 +21,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),     ## add the urls of Admin
     path('', include('members.urls')),   ## add the urls of members app
-    path('', include('staff.urls')),     ## add memebers of  staff app
+    path('', include('staff.urls')),  ## add memebers of  staff app
+    path('', include('doctors.urls')), ## add doctors of  staff app
 
     ##### webiste basic urls ###
     path('', views.index, name="home"),

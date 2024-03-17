@@ -1,0 +1,118 @@
+{% extends 'member/customerbase.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style media="screen">
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        /* Main Content Styles */
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-calendar card-icon"></i>
+                        <span class="card-title">Appointments</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">View and manage your upcoming appointments.</p>
+                        <a href="view-appointment-request" class="btn btn-primary">View Appointments</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-medkit card-icon"></i>
+                        <span class="card-title">Prescriptions</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Access your prescribed medications and dosage information.</p>
+                        <a href="#" class="btn btn-primary">View Prescriptions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-file-text-o card-icon"></i>
+                        <span class="card-title">Medical Records</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">View and download your medical records and reports.</p>
+                        <a href="#" class="btn btn-primary">View Medical Records</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+</body>
+
+{% endblock content %}

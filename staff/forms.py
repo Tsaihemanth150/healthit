@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from members import models as mmodels
-from staff import models
+from .models import ScheduleBlock
 
 
 class SignupForm(UserCreationForm):
@@ -13,3 +12,8 @@ class SignupForm(UserCreationForm):
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
 
+
+class ScheduleBlockForm(forms.ModelForm):
+    class Meta:
+        model = ScheduleBlock
+        fields = ['date', 'start_time', 'end_time','desc']

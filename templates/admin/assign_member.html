@@ -72,22 +72,12 @@
     </style>
   </head>
 
-<br><br><br>
-  <h3 style="text-align: center;color: red;">Add Department</h3>
-  <form method="POST" autocomplete="off" enctype="multipart/form-data" class="needs-validation" novalidate>
+<h1>Assign member to {{ staff_member.get_name }} ({{ staff_member.custom_id }})</h1>
+<form method="post">
     {% csrf_token %}
-
-      <div class="form-group mx-3 col-md-5">
-        <label for="validationCustom01">Add Department </label>
-        {% render_field department_form.name|attr:'required:true' class="form-control" placeholder="Add Department" %}
-      </div>
-
-<div class="content-left mx-3 ">
-    <button type="submit" class="btn  btn-primary">Add Department</button>
-</div>
-    </div>
-  </form>
-
+    {{ form.as_p }}
+    <button type="submit">Assign Member</button>
+</form>
 
 
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>

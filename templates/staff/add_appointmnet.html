@@ -1,0 +1,104 @@
+{% extends 'staff/staffbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Schedule</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        a:link {
+            text-decoration: none;
+        }
+
+        .order-card {
+            color: rgb(255, 255, 255);
+        }
+
+        .bg-c-blue {
+            background: #04868f;
+        }
+
+        .bg-c-green {
+            background: #4C51BF;
+        }
+
+        .bg-c-yellow {
+            background: #F56565;
+        }
+
+        .bg-c-pink {
+            background: #663a30;
+        }
+
+        .card {
+            -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+            box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+            border: 1px solid black;
+            margin-bottom: 30px;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card .card-block {
+            padding: 25px;
+        }
+
+        .order-card i {
+            font-size: 26px;
+        }
+
+        .f-left {
+            float: left;
+        }
+
+        .f-right {
+            float: right;
+        }
+
+        header {
+            left: 0px;
+            right: 0px;
+        }
+    </style>
+</head>
+
+{% if messages %}
+<ul class="messages alert alert-info" role="alert">
+    {% for message in messages %}
+    <li {% if message.tags  %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="container mt-5">
+    <h1>Please Add it to your Schedule: {{ staff.custom_id }}</h1>
+    <h2>Add Schedule</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="date">Date (YYYY-MM-DD)</label>
+            <input type="text" class="form-control" id="date" name="date" placeholder="YYYY-MM-DD">
+        </div>
+        <div class="form-group">
+            <label for="start_time">Start Time (HH:MM)</label>
+            <input type="text" class="form-control" id="start_time" name="start_time" placeholder="HH:MM">
+        </div>
+        <div class="form-group">
+            <label for="end_time">End Time (HH:MM)</label>
+            <input type="text" class="form-control" id="end_time" name="end_time" placeholder="HH:MM">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+{% endblock content %}

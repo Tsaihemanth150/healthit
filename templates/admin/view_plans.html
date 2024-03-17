@@ -1,6 +1,6 @@
 {% extends 'admin/adminbase.html' %}
 {% block content %}
-{%load static%}
+{% load static %}
 
 <head>
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -20,7 +20,7 @@
       margin: 100px;
     }
 
-       label #sidebar_btn {
+    label #sidebar_btn {
       z-index: 1;
       color: #fff;
       position: fixed;
@@ -29,7 +29,6 @@
       padding-left: 60px;
       margin-top:15px;
       font-size: 20px;
-
       transition: 0.5s;
       transition-property: color;
     }
@@ -37,6 +36,12 @@
 </head>
 <br><br>
 <div class="container">
+  <!-- Single Search Filter -->
+  <div class="form-group">
+    <label for="searchInput">Search:</label>
+    <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+  </div>
+
   <div class="panel panel-primary">
     <div class="panel-heading">
       <h6 class="panel-title">Questions</h6>
@@ -44,24 +49,22 @@
     <table class="table table-hover" id="dev-table">
       <thead>
         <tr>
-            <th>Serial No.</th>
+          <th>Serial No.</th>
           <th>Plan Id</th>
           <th>Name</th>
           <th>Price</th>
           <th>Validity</th>
-             <th>Plan Type</th>
+          <th>Plan Type</th>
         </tr>
       </thead>
       {% for t in plans %}
       <tr>
-        <td> {{ forloop.counter }}</td>
-        <td> {{t.plan_id}}</td>
-        <td> {{t.name}}</td>
-        <td> {{t.price}}</td>
-        <td> {{t.validity}}</td>
-        <td>{{t.plan_type}}</td>
-
-
+        <td>{{ forloop.counter }}</td>
+        <td>{{ t.plan_id }}</td>
+        <td>{{ t.name }}</td>
+        <td>{{ t.price }}</td>
+        <td>{{ t.validity }}</td>
+        <td>{{ t.plan_type }}</td>
       </tr>
       {% endfor %}
     </table>
@@ -69,4 +72,22 @@
 </div>
 
 <br><br><br><br><br><br>
+
+<script>
+  // JavaScript for filtering table rows based on all columns
+  $(document).ready(function(){
+    $('#searchInput').keyup(function(){
+      var searchText = $(this).val().toLowerCase();
+      $('#dev-table tbody tr').each(function(){
+        var currentRowText = $(this).text().toLowerCase();
+        if(currentRowText.indexOf(searchText) === -1){
+          $(this).hide();
+        } else {
+          $(this).show();
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock content %}

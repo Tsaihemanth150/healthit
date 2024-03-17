@@ -2,15 +2,11 @@
 {% load widget_tweaks %}
 {% block content %}
 
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>Assign Department to {{ staff_member.get_name }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
       a:link {
@@ -25,26 +21,10 @@
         background: #04868f;
       }
 
-      .bg-c-green {
-        background:#4C51BF;
-      }
-
-      .bg-c-yellow {
-        background: #F56565;
-      }
-
-      .bg-c-pink {
-        background: #663a30;
-      }
-
-
       .card {
-
-        -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
         box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
         border: 1px solid black;
         margin-bottom: 30px;
-        -webkit-transition: all 0.3s ease-in-out;
         transition: all 0.3s ease-in-out;
       }
 
@@ -63,32 +43,72 @@
       .f-right {
         float: right;
       }
+
       header {
-      left: 0px;
-      right: 0px;
-    }
+        left: 0px;
+        right: 0px;
+      }
 
+      form {
+        margin-top: 20px;
+      }
 
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      select:focus {
+        border-color: #48a5f2;
+      }
+
+      button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        background-color: #04868f;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #036978;
+      }
     </style>
   </head>
 
-<h1>Assign Department to {{ staff_member.get_name }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.department.label_tag }}
-    <select name="department" id="id_department">
-        {% for choice in form.department.field.choices %}
-            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
-        {% endfor %}
-    </select>
-    {% if form.department.value %}
-        <p>Department Name: {{ form.department.value }}</p>
-    {% endif %}
-    <button type="submit">Assign Department</button>
-</form>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Assign Department to {{ staff_member.get_name }}</h1>
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_department">Department:</label>
+            <select name="department" id="id_department" class="form-control">
+              {% for choice in form.department.field.choices %}
+              <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% if form.department.value %}
+          <p>Department Name: {{ form.department.value }}</p>
+          {% endif %}
+          <button type="submit" class="btn btn-primary">Assign Department</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
-
-<script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
 {% endblock content %}
